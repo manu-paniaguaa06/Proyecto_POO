@@ -45,6 +45,16 @@ usuario del sistema debe evitar:
    los constructores no validan rangos, por lo que datos inválidos se
    imprimen tal cual.
 
+## Clases abstractas
+
+`Persona` y `Vehiculo` son **clases abstractas**: declaran `mostrarInfo()` como
+función virtual pura (`= 0`), por lo que no pueden instanciarse directamente y
+obligan a cada subclase a implementar su propia versión. Las subclases concretas
+(`Usuario`, `Conductor`, `Auto`, `Moto`) sobrescriben `mostrarInfo()` y reutilizan
+la parte común llamando explícitamente a la implementación de la base
+(`Persona::mostrarInfo()` / `Vehiculo::mostrarInfo()`). Esto permite el
+comportamiento polimórfico al imprimir la información de cada objeto.
+
 ## Consideraciones
 
 El programa solo corre en consola y está escrito en **C++ estándar sin dependencias externas, por lo que compila y corre en

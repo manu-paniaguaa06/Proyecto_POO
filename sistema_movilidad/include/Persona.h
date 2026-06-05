@@ -19,7 +19,7 @@ public:
     int getEdad() const;
     std::string getId() const;
 
-    virtual void mostrarInfo() const;
+    virtual void mostrarInfo() const = 0;
 };
 
 #endif

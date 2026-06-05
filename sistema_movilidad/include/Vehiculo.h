@@ -19,7 +19,7 @@ public:
     std::string getModelo() const;
     std::string getColor() const;
 
-    virtual void mostrarInfo() const;
+    virtual void mostrarInfo() const = 0;
 };
 
 #endif
