@@ -4,7 +4,7 @@
 #include "Moto.h"
 
 int main() {
-    Usuario u("Manu", 25, "U001", 500.0);
+    Usuario u("Manu", 19, "U001", 500.0);
     Conductor c("Carlos", 40, "C001", "LIC-9988");
 
     u.realizarPago(120.50);
