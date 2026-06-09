@@ -1,5 +1,6 @@
 #include "Moto.h"
 
+// HERENCIA: el constructor invoca al constructor de base Vehiculo.
 Moto::Moto() : Vehiculo(), cilindraje(0) {}
 
 Moto::Moto(std::string placas, std::string modelo, std::string color, int cilindraje)
@@ -7,6 +8,7 @@ Moto::Moto(std::string placas, std::string modelo, std::string color, int cilind
 
 int Moto::getCilindraje() const { return cilindraje; }
 
+// SOBREESCRITURA: redefine mostrarInfo de Vehiculo y reutiliza la version base.
 void Moto::mostrarInfo() const {
     std::cout << "--- Moto ---" << std::endl;
     Vehiculo::mostrarInfo();

@@ -3,7 +3,9 @@
 
 #include "Vehiculo.h"
 
+// HERENCIA: Moto hereda de Vehiculo.
 class Moto : public Vehiculo {
+// MODIFICADOR DE ACCESO private: atributo exclusivo de Moto.
 private:
     int cilindraje;
 
@@ -13,6 +15,7 @@ public:
 
     int getCilindraje() const;
 
+    // SOBREESCRITURA: redefine el metodo virtual heredado de Vehiculo.
     void mostrarInfo() const override;
 };
 

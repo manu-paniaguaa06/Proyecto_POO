@@ -1,10 +1,13 @@
 #include "Usuario.h"
 
+// HERENCIA: el constructor invoca al constructor de la base Persona para
+// inicializar los atributos heredados.
 Usuario::Usuario() : Persona(), saldo(0.0) {}
 
 Usuario::Usuario(std::string nombre, int edad, std::string id, double saldo)
     : Persona(nombre, edad, id), saldo(saldo) {}
 
+// SOBRECARGA: version que recibe solo el monto del pago.
 void Usuario::realizarPago(double monto) {
     if (monto <= saldo) {
         saldo -= monto;
@@ -15,6 +18,7 @@ void Usuario::realizarPago(double monto) {
     }
 }
 
+// SOBRECARGA: mismo nombre, distintos parametros.
 void Usuario::realizarPago(double monto, std::string concepto) {
     if (monto <= saldo) {
         saldo -= monto;
@@ -27,6 +31,7 @@ void Usuario::realizarPago(double monto, std::string concepto) {
 
 double Usuario::getSaldo() const { return saldo; }
 
+// SOBREESCRITURA: redefine mostrarInfo de Persona.
 void Usuario::mostrarInfo() const {
     std::cout << "--- Usuario ---" << std::endl;
     Persona::mostrarInfo();

@@ -4,9 +4,13 @@
 #include "Persona.h"
 #include "Vehiculo.h"
 
+// HERENCIA: Conductor hereda de Persona.
 class Conductor : public Persona {
+// MODIFICADOR DE ACCESO private: atributos exclusivos de Conductor.
 private:
     std::string licencia;
+    // POLIMORFISMO: puntero a la clase base Vehiculo; puede apuntar a un Auto
+    // o a una Moto.
     Vehiculo* vehiculoAsignado;
 
 public:
@@ -18,6 +22,7 @@ public:
     std::string getLicencia() const;
     Vehiculo* getVehiculoAsignado() const;
 
+    // SOBREESCRITURA: redefine el metodo virtual heredado de Persona.
     void mostrarInfo() const override;
 };
 
