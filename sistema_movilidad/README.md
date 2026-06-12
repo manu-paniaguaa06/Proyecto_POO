@@ -25,44 +25,58 @@ de viajes al saldo del usuario:
 - pago de viaje (sobrecargado: solo monto, o monto + concepto)
 - impresión polimórfica de la información de cada objeto
 
-Consta de un `main` de demostración que corre sobre consola y ejecuta cada
-una de estas operaciones de manera secuencial.
+Consta de un menú con las opciones iniciales y corre sobre consola.
 
 ## Casos que harían que el proyecto deje de funcionar
 
 Estos son los casos límite que rompen la lógica del programa y que el
 usuario del sistema debe evitar:
 
-1. **Llamar `mostrarInfo()` sobre un conductor sin vehículo** y suponer
-   que imprime datos del vehículo: la clase ya valida `vehiculoAsignado
-   != nullptr` e imprime "Sin vehiculo asignado.", pero si se modifica el
-   código quitando esa validación se obtiene un `nullptr dereference` y
-   el programa se cae.
-2. **Pagar más que el saldo disponible** (`realizarPago(monto)` con
-   `monto > saldo`): el saldo del usuario queda negativo. La regla de
-   negocio se rompe a menos que se valide el monto contra el saldo.
-3. **Crear un Auto o Moto con número de puertas o cilindraje negativos**:
-   los constructores no validan rangos, por lo que datos inválidos se
-   imprimen tal cual.
+1. **Teclear letras en un campo numérico de un alta o cobro** (edad,
+   saldo, monto, número de puertas o cilindraje): `cin` queda en estado
+   de error permanente y el menú se cicla infinitamente agregando
+   registros con datos basura; hay que cerrar el programa (Ctrl+C).
+2. **Teclear letras en "Elige una opcion"**: la lectura fallida deja la
+   opción en 0, por lo que el programa se cierra como si se hubiera
+   elegido Salir y se pierde todo lo capturado.
+3. **Terminar la entrada con Ctrl+D (EOF) sin elegir la opción 0**: la
+   última opción leída se repite infinitamente porque ya no hay nada
+   que leer.
+4. **Cobrar un monto negativo**: la validación `monto <= saldo` se
+   cumple con números negativos, por lo que el "cobro" aumenta el saldo
+   del usuario (cobrar -50 con saldo de $100 lo deja en $150).
+5. **Registrar dos personas con el mismo id o dos vehículos con las
+   mismas placas**: el programa no valida duplicados, por lo que las
+   búsquedas (consultar saldo, cobrar, asignar y eliminar) solo
+   encuentran al primero que coincida.
+6. **Capturar valores negativos en las altas** (edad, saldo inicial,
+   número de puertas o cilindraje): los constructores no validan rangos,
+   por lo que los datos inválidos se guardan e imprimen tal cual; un
+   saldo inicial negativo deja al usuario sin poder pagar ningún viaje.
+
+Otros casos límite sí están cubiertos por el código: pagar más que el
+saldo disponible imprime "Saldo insuficiente" sin dejar el saldo
+negativo, eliminar un vehículo que está asignado a un conductor se lo
+quita antes de borrarlo (el conductor queda "sin vehiculo asignado"), y
+al llegar al límite `MAX` de registros se avisa que ya no hay espacio.
 
 ## Clases abstractas
 
-`Persona` y `Vehiculo` son **clases abstractas**: declaran `mostrarInfo()` como
+`Persona` y `Vehiculo` son **clases abstractas**: declaran `to_string()` como
 función virtual pura (`= 0`), por lo que no pueden instanciarse directamente y
 obligan a cada subclase a implementar su propia versión. Las subclases concretas
-(`Usuario`, `Conductor`, `Auto`, `Moto`) sobrescriben `mostrarInfo()` y reutilizan
-la parte común llamando explícitamente a la implementación de la base
-(`Persona::mostrarInfo()` / `Vehiculo::mostrarInfo()`). Esto permite el
+(`Usuario`, `Conductor`, `Auto`, `Moto`) sobrescriben `to_string()`. Esto permite el
 comportamiento polimórfico al imprimir la información de cada objeto.
 
 ## Consideraciones
 
-El programa solo corre en consola y está escrito en **C++ estándar sin dependencias externas, por lo que compila y corre en
+El programa solo corre en consola y está escrito en **C++ estándar** sin dependencias externas, por lo que compila y corre en
 cualquier sistema operativo.
 
-Los archivos `.h` se encuentran en `include/` y los `.cpp` en `src/`.
+Todo el código está dentro de los archivos `.h` (`persona.h`, `vehiculo.h`
+y `plataforma.h`) y hay un solo `main.cpp` con el menú.
 
-compilar con: `g++ -std=c++17 -Iinclude src/*.cpp -o sistema`
+compilar con: `g++ main.cpp -o sistema`
 
 correr en linux/macOS: `./sistema`
 
